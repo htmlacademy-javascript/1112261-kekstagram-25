@@ -1,4 +1,5 @@
 import {makeElement} from './util.js';
+import {ESC_KEY, WIDTH_AVATAR, HEIGHT_AVATAR} from './const.js';
 
 const modalWindow = document.querySelector('.big-picture');
 const closeButton = modalWindow.querySelector('.cancel');
@@ -15,16 +16,17 @@ closeButton.addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
+  if (evt.keyCode === ESC_KEY) {
     modalWindow.classList.add('hidden');
+    document.removeEventListener('keydown');
   }
 });
 
 const createNewComment = () => {
   const comment = makeElement('li', 'social__comment');
   const avatar = makeElement('img', 'social__picture');
-  avatar.style.width = '35';
-  avatar.style.height = '35';
+  avatar.style.width = WIDTH_AVATAR;
+  avatar.style.height = HEIGHT_AVATAR;
   comment.appendChild(avatar);
   const commentText = makeElement('p', 'social__text');
   comment.appendChild(commentText);
@@ -38,8 +40,8 @@ const showFullPhoto = (miniature, pictureElement) => {
     commentLoader.classList.add('hidden');
     document.body.classList.add('modal-open');
     bigPicture.querySelector('img').src = pictureElement.url;
-    likesCount.textContent = pictureElement.likes;
-    commentCount.textContent = pictureElement.comments.length;
+    likesCount.textContent = String(pictureElement.likes);
+    commentCount.textContent = String(pictureElement.comments.length);
     descriptionFullPhoto.textContent = pictureElement.description;
     for (let i = 0; i < pictureElement.comments.length; i++) {
       const newComment = createNewComment();
